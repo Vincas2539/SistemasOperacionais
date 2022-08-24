@@ -4,10 +4,11 @@
 
 void primeiroEX();
 void segundoEX();
+
 // Exercício 1
 void primeiroEx() {
-  char nomeArquivo[50], linha;
-  int x, b;
+  char nomeArquivo[50], b, *linha;
+  int x;
   FILE *entrada;
 
   printf("Digite o nome do arquivo desejado: ");
@@ -15,35 +16,49 @@ void primeiroEx() {
 
   entrada = fopen(nomeArquivo, "r");
   if (entrada == NULL)
-    printf("Arquivo não encontrado");
+    printf("Arquivo não encontrado"); // mão está funcionando
+  
   while (true) {
-    b = fscanf(entrada, "%s", &linha);
-    printf("%s\n", &linha);
-    if (b != 1)
+    linha = fgets(&b, 100, entrada);
+    
+    if (linha == NULL)
       break;
+    else printf("%s", linha);
   }
   fclose(entrada);
 }
 
 // Exercício 2
+void segundoEX(){
+  char nomeArquivoEntrada[50], nomeArquivoSaida[50], *linha, b;
+  int x;
+  FILE *entrada, *saida;
 
-int main(void) {
-  char nomeArquivo[50], linha;
-  int x, b;
-  FILE *entrada;
+  printf("Digite o nome do arquivo que deseja ler: ");
+  scanf("%s", nomeArquivoEntrada);
 
-  printf("Digite o nome do arquivo desejado: ");
-  scanf("%s", nomeArquivo);
+  entrada = fopen(nomeArquivoEntrada, "r");
+  if (entrada == NULL) printf("Arquivo não encontrado"); // não está funcionando
 
-  entrada = fopen(nomeArquivo, "r");
-  if (entrada == NULL)
-    printf("Arquivo não encontrado");
+  printf("Digite o nome do arquivo que deseja escrever: ");
+  scanf("%s", nomeArquivoSaida);
+  saida = fopen(nomeArquivoSaida, "w");
+  if (saida == NULL) printf("Não foi possível criar arquivo"); // não está funcionando
+  
   while (true) {
-    b = fscanf(entrada, "%s", &linha);
-    printf("%s\n", &linha);
-    if (b != 1)
-      break;
+    linha = fgets(&b, 100, entrada);
+    
+    if (linha != NULL){
+      printf("%s", linha);
+      fputs(linha, saida);
+    } else break;
   }
   fclose(entrada);
+  fclose(saida);
+}
+
+int main(void) {
+  // primeiroEx();
+  // segundoEX();
   return 0;
 }
