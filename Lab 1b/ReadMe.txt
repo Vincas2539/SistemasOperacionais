@@ -1,4 +1,3 @@
-
 No Exercicio 1, temos 7 syscalls no codigo, mas a quantidade executada vai variar com a quantidade de linhas do arquivo lido.
 
 No Exercicio 2, temos 13 syscalls no codigo, mas a quantidade executada vai variar com a quantidade de linhas do arquivo lido.
