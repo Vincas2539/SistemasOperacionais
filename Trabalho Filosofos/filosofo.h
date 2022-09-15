@@ -1,27 +1,39 @@
 #ifndef filosofo
 #define filosofo
-#include "Mesa.h"
 
 #include <iostream>
+#include <unistd.h>
+
 using namespace std;
 
-class Filosofo {
+class Filosofo { // declaração do objeto filosofo
 private:
-  bool comendo, pensando, faminto;
-  int id, talher;
-  Filosofo *esq, *dir;
+  bool comendo, pensando, faminto, talherEsq, talherDir;
+  int id, timer, idGarfoDir, idGarfoEsq;
 
 public:
-  Filosofo(Mesa *mesa, int id, Filosofo *esq, Filosofo *dir);
+  Filosofo(int id);
 
   int getId(){return id;};
-  Filosofo *getEsq(){return esq;};
-  Filosofo *getDir(){return dir;};
+  char getStatus();
+  void setStatus(char id);
 
-  bool getGarfo(Mesa *mesa);
-  bool putGarfo(Mesa *mesa);
+  bool tentaComer(int garfos[]);
+
+  bool getGarfoDir(int g[]);
+  bool getGarfoEsq(int g[]);
+  void devolveGarfos(int g[]);
+
   void think();
+  void fome();
+  void comer();
+  void morrer();
 
+  int getTimer(){return timer;}
+  void runTimer(){timer = timer-1;}
+  void setTimer(int n);
+
+  void rodar(int garfos[]);
 };
 
 
