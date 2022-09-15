@@ -58,7 +58,19 @@ void segundoEX(){
 }
 
 int main(void) {
-  // primeiroEx();
-  // segundoEX();
+  int a;
+  
+
+  while(a != 0){
+    printf("\nEscolha o exercício a ser executado (0 para finalizar execução): ");
+    scanf("%d", &a);
+    if(a == 1){
+      primeiroEx();
+    } else if(a == 2){
+      segundoEX();
+    } else{
+      printf("Escolha valores entre 1 e 2");
+    }
+  }
   return 0;
 }
