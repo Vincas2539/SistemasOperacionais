@@ -1,7 +1,7 @@
 ### Projeto 01 - Jantar dos filósofos
 
 ```
-g++ -o jantarFilosofos source.cpp
+g++ -o jantarFilosofos main.cpp
 ```
 ```
 ./jantarFilosofos
