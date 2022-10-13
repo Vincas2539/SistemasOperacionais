@@ -78,7 +78,6 @@ void Fill_Matriz(float *A[], int rows, int cols){
 	for (i = 0; i < rows; i++)
     		for (j = 0; j < cols; j++){
     			A[i][j] = rand() % 100;
-			printf("%lf - ", A[i][j]);
 		}
 }
 
