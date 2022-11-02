@@ -68,11 +68,17 @@ void *transferencia2(void *arg) {
   return 0;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   long thread;
-  int thread_count = 100;
+  int thread_count;
   int status;
   
+  if (argc != 2){
+    printf("Inserir apenas a quantidade de transferencias por conta que deseja executar!\n");
+    return EXIT_FAILURE;
+  }else
+    thread_count = atoi(argv[1]);
+
   // Todas as contas começam com saldo 500
   conta1.saldo = 1000;
   conta2.saldo = 1000;
