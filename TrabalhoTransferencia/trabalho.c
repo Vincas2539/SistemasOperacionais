@@ -10,55 +10,72 @@
 #include <time.h>
 #include <pthread.h>
 
-// 64kb stack
-#define FIBER_STACK 1024 * 64
-
 struct c {
   int saldo;
 };
 
 typedef struct c conta;
-
 conta conta1, conta2;
+int erros = 0;
 
 // The child thread will execute this function
 
 void *transferencia1(void *arg) {
   long mltp = (long) arg;
-  int valor = mltp * rand()%500;
-  if (conta1.saldo >= valor) { // 2
-    conta1.saldo -= valor;
-    conta2.saldo += valor;
-    printf("Transferência concluída com sucesso!\n");
-    printf("Saldo de c1: %d\n", conta1.saldo);
-    printf("Saldo de c2: %d\n", conta2.saldo);
-  }else
-    printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
+  int valor = (mltp * rand())%250;
+  int countT1 = 0;
+  
+  while(1){
+    if (conta1.saldo >= valor) { // 2
+      conta1.saldo -= valor;
+      conta2.saldo += valor;
+      printf("Transferência concluída com sucesso!\n");
+      printf("Saldo de c1: %d\n", conta1.saldo);
+      printf("Saldo de c2: %d\n", conta2.saldo);
+      break;
+    }else if (countT1 > (rand()%5)){
+      printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
+      erros++;
+      break;
+    }
+    countT1++;
+    sleep(1);
+  }
   return 0;
 }
 
 void *transferencia2(void *arg) {
   long mltp = (long) arg;
-  int valor = mltp * rand()%500;
-  if (conta2.saldo >= valor) { // 2
-    conta2.saldo -= valor;
-    conta1.saldo += valor;
-    printf("Transferência concluída com sucesso!\n");
-    printf("Saldo de c1: %d\n", conta1.saldo);
-    printf("Saldo de c2: %d\n", conta2.saldo);
-  }else
-    printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
+  int valor = (mltp * rand())%250;
+  int countT2 = 0;
+  
+  while(1){
+    if (conta2.saldo >= valor) { // 2
+      conta2.saldo -= valor;
+      conta1.saldo += valor;
+      printf("Transferência concluída com sucesso!\n");
+      printf("Saldo de c1: %d\n", conta1.saldo);
+      printf("Saldo de c2: %d\n", conta2.saldo);
+      break;
+    }else if (countT2 > (rand()%5)){
+      printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
+      erros++;
+      break;
+    }
+    countT2++;
+    sleep(1);
+  }
   return 0;
 }
 
 int main() {
   long thread;
-  int thread_count = 20;
+  int thread_count = 100;
   int status;
   
   // Todas as contas começam com saldo 500
-  conta1.saldo = 500;
-  conta2.saldo = 500;
+  conta1.saldo = 1000;
+  conta2.saldo = 1000;
   
   int count = 0;
   
@@ -85,7 +102,8 @@ int main() {
       printf("A thread morreu. Status: %d", status);
   }
 
-  printf("\n%d Transferencias Finalizadas!!\n", count);
+  int tr = count - erros;
+  printf("\n%d Transferencias Finalizadas!\n%d bem sucedidas e %d com erro.\n", count, tr, erros);
   return 0;
 }
 
