@@ -10,13 +10,18 @@
 #include <time.h>
 #include <pthread.h>
 
+void *transferencia1(void *arg);
+void *transferencia2(void *arg);
+
 struct c {
   int saldo;
 };
 
 typedef struct c conta;
 conta conta1, conta2;
-int erros = 0;
+int mais = 0;
+int count = 0;
+int thread_count = 100;
 
 // The child thread will execute this function
 
@@ -34,9 +39,13 @@ void *transferencia1(void *arg) {
       printf("Saldo de c2: %d\n", conta2.saldo);
       break;
     }else if (countT1 > (rand()%5)){
-      printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
-      erros++;
-      break;
+      pthread_t thread2;
+      pthread_create(&thread2, NULL, transferencia2, (void *) mltp);
+      pthread_join(thread2, NULL);
+      // printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
+      // erros++;
+      mais++;
+      countT1=0;
     }
     countT1++;
     sleep(1);
@@ -58,9 +67,13 @@ void *transferencia2(void *arg) {
       printf("Saldo de c2: %d\n", conta2.saldo);
       break;
     }else if (countT2 > (rand()%5)){
-      printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
-      erros++;
-      break;
+      pthread_t thread1;
+      pthread_create(&thread1, NULL, transferencia1, (void *) mltp);
+      pthread_join(thread1, NULL);
+      // printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
+      // erros++;
+      mais++;
+      countT2=0;
     }
     countT2++;
     sleep(1);
@@ -68,22 +81,14 @@ void *transferencia2(void *arg) {
   return 0;
 }
 
-int main(int argc, char *argv[]) {
+int main() {
   long thread;
-  int thread_count;
   int status;
-  
-  if (argc != 2){
-    printf("Inserir apenas a quantidade de transferencias por conta que deseja executar!\n");
-    return EXIT_FAILURE;
-  }else
-    thread_count = atoi(argv[1]);
 
-  // Todas as contas começam com saldo 500
+
+  // Todas as contas começam com saldo 1000
   conta1.saldo = 1000;
   conta2.saldo = 1000;
-  
-  int count = 0;
   
   pthread_t* threads1 = (pthread_t*) malloc(thread_count * sizeof(pthread_t));
   pthread_t* threads2 = (pthread_t*) malloc(thread_count * sizeof(pthread_t));
@@ -108,8 +113,8 @@ int main(int argc, char *argv[]) {
       printf("A thread morreu. Status: %d", status);
   }
 
-  int tr = count - erros;
-  printf("\n%d Transferencias Finalizadas!\n%d bem sucedidas e %d com erro.\n", count, tr, erros);
+  int tr = count + mais;
+  printf("\n%d Transferencias Finalizadas!\n%d selecionadas e %d a mais.\n", tr, count, mais);
   return 0;
 }
 
