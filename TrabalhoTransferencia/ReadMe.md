@@ -9,4 +9,4 @@ Para executar o programa utilizamos o comando:
 ./Trabalho
 
 
-OBS: A primeira versão do programa dava erro quando, por exemplo, a conta2 foi zerada e não existem mais transaçoes da conta 1 para a conta 2. Inicialmente nós tinhamos deixado o erro e notificavamos o usuário. Agora, para mitigar este problema, ao faltar dinheiro em uma conta ele gera uma transação da conta não zerada para a zerada. É possível observar quantas vezes isso foi necessário no print no final da execução.
+OBS: A primeira versão do programa dava erro quando, por exemplo, a conta2 foi zerada e não existem mais transaçoes da conta1 para a conta2, mas existem transações aguardando ter dinheiro o suficiente na conta2 para finalizar, assim nunca finalizando. Inicialmente nós tinhamos deixado o erro e notificavamos o usuário. Agora, para mitigar este problema, ao faltar dinheiro em uma conta, e não existirem mais transações da outra, é gerado uma transação para a conta que precisa de dinheiro. É possível observar quantas vezes isso aconteceu no print no final da execução.
