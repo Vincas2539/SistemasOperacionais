@@ -42,8 +42,6 @@ void *transferencia1(void *arg) {
       pthread_t thread2;
       pthread_create(&thread2, NULL, transferencia2, (void *) mltp);
       pthread_join(thread2, NULL);
-      // printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
-      // erros++;
       mais++;
       countT1=0;
     }
@@ -70,8 +68,7 @@ void *transferencia2(void *arg) {
       pthread_t thread1;
       pthread_create(&thread1, NULL, transferencia1, (void *) mltp);
       pthread_join(thread1, NULL);
-      // printf("ERRO! Saldo insuficiente, transferencia cancelada.\n");
-      // erros++;
+
       mais++;
       countT2=0;
     }
